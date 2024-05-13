@@ -122,12 +122,7 @@ namespace EnhancedBeliefs
             {
                 return;
             }
-            switch (list.RandomElementByWeight((SymbolSource s) => s switch
-            {
-                SymbolSource.Pack => 1f,
-                SymbolSource.Deity => 0.5f,
-                _ => throw new NotImplementedException(),
-            }))
+            switch (list.RandomElementByWeight((SymbolSource s) => s == SymbolSource.Pack ? 1f : 0.5f))
             {
                 case SymbolSource.Pack:
                     SetupFromSymbolPack();
@@ -136,7 +131,7 @@ namespace EnhancedBeliefs
                     SetupFromDeity();
                     break;
             }
-            title = GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_ideoName", request, null, forceLog: false, null, null, null, true));
+            title = GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_ideoName", request, null, false, null, null, null, true));
 
             List<IdeoDescriptionMaker.PatternEntry> patterns = (from entry in Ideo.memes.Where((MemeDef meme) => meme.descriptionMaker?.patterns != null).SelectMany((MemeDef meme) => meme.descriptionMaker.patterns)
                                                             group entry by entry.def into grp

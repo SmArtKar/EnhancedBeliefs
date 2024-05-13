@@ -203,6 +203,7 @@ namespace EnhancedBeliefs
         public Dictionary<Ideo, float> baseIdeoOpinions = new Dictionary<Ideo, float>();
         public Dictionary<Ideo, float> personalIdeoOpinions = new Dictionary<Ideo, float>();
         public Dictionary<Ideo, float> cachedRelationshipIdeoOpinions = new Dictionary<Ideo, float>();
+        public Dictionary<Pawn, float> cachedRelationships = new Dictionary<Pawn, float>();
 
         public Dictionary<MemeDef, float> memeOpinions = new Dictionary<MemeDef, float>();
         public Dictionary<PreceptDef, float> preceptOpinions = new Dictionary<PreceptDef, float>();
@@ -292,10 +293,10 @@ namespace EnhancedBeliefs
             // In cases where you want to avoid recursion
             if (noRelationship)
             {
-                return [baseIdeoOpinions[ideo] / 100f, PersonalIdeoOpinion(ideo) / 100f];
+                return new float[] { baseIdeoOpinions[ideo] / 100f, PersonalIdeoOpinion(ideo) / 100f };
             }
 
-            return [baseIdeoOpinions[ideo] / 100f, PersonalIdeoOpinion(ideo) / 100f, IdeoOpinionFromRelationships(ideo) / 100f];
+            return new float[] { baseIdeoOpinions[ideo] / 100f, PersonalIdeoOpinion(ideo) / 100f, IdeoOpinionFromRelationships(ideo) / 100f };
         }
 
         // Get pawn's basic opinion from hearing about ideos beliefs, based on their traits, relationships and current ideo
@@ -461,7 +462,9 @@ namespace EnhancedBeliefs
                 Pawn otherPawn = pawns[i];
 
                 // Up to +-2 opinion per pawn
-                opinion += pawn.relations.OpinionOf(otherPawn) * 0.02f;
+                float pawnOpinion = pawn.relations.OpinionOf(otherPawn);
+                opinion += pawnOpinion * 0.02f;
+                cachedRelationships[pawn] = pawnOpinion;
             }
 
             cachedRelationshipIdeoOpinions[ideo] = opinion;
