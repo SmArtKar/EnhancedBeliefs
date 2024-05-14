@@ -149,11 +149,20 @@ namespace EnhancedBeliefs
 
         public void BaseOpinionRecache(Ideo ideo)
         {
+            if (ideo == null) return; // optionally Log.Message something?
             List<Pawn> pawns = pawnTrackerData.Keys.ToList();
 
             for (int i = 0; i < pawns.Count; i++)
             {
-                pawnTrackerData[pawns[i]].baseIdeoOpinions[ideo] = pawnTrackerData[pawns[i]].DefaultIdeoOpinion(ideo);
+                if (pawns[i].Ideo == ideo)
+                {
+                    pawnTrackerData.Remove(pawns[i]);
+                    AddTracker(pawns[i]); // reset tracker completely since their ideo changed
+                }
+                else
+                {
+                    pawnTrackerData[pawns[i]].baseIdeoOpinions[ideo] = pawnTrackerData[pawns[i]].DefaultIdeoOpinion(ideo);
+                }
             }
         }
 
