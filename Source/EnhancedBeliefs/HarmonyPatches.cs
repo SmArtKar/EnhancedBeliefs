@@ -109,7 +109,7 @@ namespace EnhancedBeliefs
         {
             Pawn pawn = __instance.pawn;
 
-            if (pawn.IsHashIntervalTick(GenTicks.TickLongInterval) && !pawn.Destroyed && pawn.Map != null && __instance.ideo != null && !Find.IdeoManager.classicMode && )
+            if (pawn.IsHashIntervalTick(GenTicks.TickLongInterval) && !pawn.Destroyed && pawn.Map != null && __instance.ideo != null && !Find.IdeoManager.classicMode)
             {
                 GameComponent_EnhancedBeliefs comp = Current.Game.GetComponent<GameComponent_EnhancedBeliefs>();
                 IdeoTrackerData data = comp.pawnTrackerData.TryGetValue(pawn);
